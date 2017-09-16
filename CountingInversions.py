@@ -1,48 +1,60 @@
-# ALGORITHM STILL INCORRECT
+count = 0
 
-c = 0
+
+def merge(lst, s_half1, s_half2):
+    global count
+    # indices for half1, half2, lst
+    i = 0  # index for half 1
+    j = 0  # index for half 2
+    i_lst = 0  # index for lst
+
+    while i_lst < len(lst):
+        # if elements left in both halves
+        if i < len(s_half1) and j < len(s_half2):
+            if s_half1[i] <= s_half2[j]:
+                lst[i_lst] = s_half1[i]
+                i += 1
+            else:
+                count += len(s_half1[i:])
+                lst[i_lst] = s_half2[j]
+                j += 1
+        # if half 2 exhausted
+        elif i < len(s_half1):
+            lst[i_lst] = s_half1[i]
+            i += 1
+        # if half 1 exhausted
+        elif j < len(s_half2):
+            lst[i_lst] = s_half2[j]
+            j += 1
+
+        i_lst += 1
+
+
+def merge_sort(lst):
+    # stop recursing if len(lst) == 1
+    if len(lst) == 1:
+        return lst
+
+    # define and recurse on first and second halves
+    middle = len(lst) // 2
+    s_half1 = merge_sort(lst[:middle])
+    s_half2 = merge_sort(lst[middle:])
+
+    # begin merge
+    merge(lst, s_half1, s_half2)
+
+    # finished merging
+    return lst
 
 
 def main():
-    file = open('/Users/justin/PycharmProjects/Stanford Lagunita - Algorithms/txt files/IntegerArray.txt', 'r')
-    array = file.read().split()
-    print("done reading")
-    count_inversions(array)
-    print(c)
+    numlist_file = "/Users/justin/PycharmProjects/StanfordLagunitaAlgorithms1/txt files/IntegerArray.txt"
+    in_file = open(numlist_file, 'r')
+    numlist = [int(nums.strip()) for nums in in_file.readlines()]
 
+    merge_sort(numlist)
+    print(count)
 
-def count_inversions(array):
-    global c
-    if len(array) > 1:
-        mid = len(array) // 2
-        first_half = array[:mid]
-        second_half = array[mid:]
-
-        count_inversions(first_half)  # left inversions
-        count_inversions(second_half)  # right inversions
-
-        i, j, k = 0, 0, 0
-
-        while k < len(first_half) + len(second_half):
-            while i < len(first_half) and j < len(second_half):  # neither list exhausted
-                if first_half[i] <= second_half[j]:  # not an inversion
-                    array[k] = first_half[i]
-                    i += 1
-                else:
-                    c += len(first_half[i:])  # inversion
-                    array[k] = second_half[j]
-                    j += 1
-                k += 1
-            while i < len(first_half):  # second list exhausted
-                array[k] = first_half[i]
-                i += 1
-                k += 1
-            while j < len(second_half):  # first list exhausted
-                array[k] = second_half[j]
-                j += 1
-                k += 1
-
-    return array
 
 main()
 

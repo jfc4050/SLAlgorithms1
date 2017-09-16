@@ -13,7 +13,6 @@ def find_pivot(array, left, right):
     pivot_index = random.randrange(left, right + 1)
     pivot = array[pivot_index]
     swap(array, left, pivot_index)
-
     pivot_boundary = left + 1
 
     return pivot, pivot_boundary
@@ -45,5 +44,6 @@ def main():
     right = len(array_in) - 1
     quick_sort(array_in, left, right)
     print("final output:\n", array_in)
+
 
 main()
