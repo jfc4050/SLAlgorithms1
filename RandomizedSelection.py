@@ -4,8 +4,8 @@ import random
 def partition(arr, pivotIndex, testing=False):
     if pivotIndex != 0:
         arr[pivotIndex], arr[0] = arr[0], arr[pivotIndex]  # move pivot to start of array
-    pivot = arr[0]  # get pivot value
-    border = 1  # set border just beyond pivot
+    pivot = arr[0]                                         # get pivot value
+    border = 1                                             # set border just beyond pivot
 
     for i in range(1, len(arr)):
         if arr[i] < pivot:                             # if current element is less than pivot
