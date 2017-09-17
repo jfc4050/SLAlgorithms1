@@ -8,10 +8,10 @@ def partition(arr, pivotIndex, testing=False):
     border = 1  # set border just beyond pivot
 
     for i in range(1, len(arr)):
-        if arr[i] < pivot:  # if current element is less than pivot
+        if arr[i] < pivot:                             # if current element is less than pivot
             arr[i], arr[border] = arr[border], arr[i]  # swap value to border index
-            border += 1  # advance border
-    arr[0], arr[border-1] = arr[border-1], arr[0]  # move pivot to rightful position
+            border += 1                                # advance border
+    arr[0], arr[border-1] = arr[border-1], arr[0]      # move pivot to rightful position
 
     if testing:
         pivot = arr[border-1]
@@ -35,7 +35,7 @@ def randomizedSelection(arr, queryIndex, start=0, end=None, testing=False):
     if testing:
         assert arr[randIndex] in arr
 
-    pivotIndex = partition(arr, randIndex)  # partition array around pivot
+    pivotIndex = partition(arr, randIndex)    # partition array around pivot
 
     if queryIndex == pivotIndex:
         return arr[pivotIndex]
