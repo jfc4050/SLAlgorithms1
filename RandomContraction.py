@@ -30,6 +30,15 @@ def contraction(myGraph, node1, node2):
     del myGraph.graph[node2]                        # finally, delete node 2
 
 
+def minCuts(myGraph):
+    minCut = sys.maxsize
+    for node in list(myGraph.graph.keys()):
+        cuts = len(list(myGraph.graph[node]))
+        if cuts < minCut:
+            minCut = cuts
+    return "minCuts: " + str(minCut)
+
+
 def randomizeContraction(myGraph):
     while len(myGraph.graph) > 2:
         # pick random node from myGraph
@@ -37,13 +46,7 @@ def randomizeContraction(myGraph):
         # pick random node2 (that is connected to node1)
         randNode2 = random.choice(myGraph.graph[randNode1])
         contraction(myGraph, randNode1, randNode2)
-
-    minCuts = sys.maxsize
-    for node in list(myGraph.graph.keys()):
-        cuts = len(list(myGraph.graph[node]))
-        if cuts < minCuts:
-            minCuts = cuts
-    return "minCuts: " + str(minCuts)
+    return minCuts(myGraph)
 
 
 def main():
