@@ -62,4 +62,5 @@ def main():
     # readGraph(filename, myGraph)
     print(randomizeContraction(myGraph))
 
+
 main()
