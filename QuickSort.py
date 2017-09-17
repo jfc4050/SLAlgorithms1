@@ -2,8 +2,8 @@ import random
 
 
 class Counter:
-    def __init__(self):
-        self.total = 0
+    def __init__(self, n=0):
+        self.total = n
 
     def increment(self, amt=0):
         self.total += amt
@@ -19,30 +19,40 @@ def swap(array, index1, index2):
     array[index2] = mem
 
 
-def choose_pivot_first(array, left, right):
-    # select first item in array as pivot
-    pivot_index = left
+def choose_pivot(arr, start, end, pivot_type):
 
-    return pivot_index
+    def first_element(left):
+        # select first item in array as pivot
+        index = left
+        return index
 
+    def random_element(left, right):
+        # select random pivot
+        index = random.randrange(left, right + 1)
+        return index
 
-def choose_pivot_random(array, left, right):
-    # select random pivot
-    pivot_index = random.randrange(left, right + 1)
+    def median_element(array, left, right):
+        # select median of array[left], array[mid], and array[right] as pivot
+        mid = (right + left) // 2
+        sorted_ar = sorted([(array[left],  left),
+                            (array[mid],   mid),
+                            (array[right], right)])
 
-    return pivot_index
+        index = sorted_ar[1][1]
+        return index
 
+    if pivot_type == "first":
+        pivot_index = first_element(end)
+    elif pivot_type == "random":
+        pivot_index = random_element(start, end)
+    elif pivot_type == "median":
+        pivot_index = median_element(arr, start, end)
 
-def choose_pivot_median(array, left, right):
-    # select median of array[left], array[mid], and array[right] as pivot
-    mid = (right + left) // 2
-    sorted_ar = sorted([(array[left],  left),
-                        (array[mid],   mid),
-                        (array[right], right)])
+    pivot = arr[pivot_index]
+    swap(arr, start, pivot_index)
+    pivot_boundary = start + 1
 
-    pivot_index = sorted_ar[1][1]
-
-    return pivot_index
+    return pivot, pivot_index, pivot_boundary
 
 
 def quick_sort(array, counter, left=0, right=None):
@@ -51,10 +61,7 @@ def quick_sort(array, counter, left=0, right=None):
 
     if (right - left) > 0:
         # find pivot and move to front of array, then set pivot_boundary
-        pivot_index = choose_pivot_random(array, left, right)
-        pivot = array[pivot_index]
-        swap(array, left, pivot_index)
-        pivot_boundary = left + 1
+        pivot, pivot_index, pivot_boundary = choose_pivot(array, left, right, "median")
 
         # iterate through array, moving elements < pivot behind
         # pivot_boundary, incrementing pivot_boundary as necessary
