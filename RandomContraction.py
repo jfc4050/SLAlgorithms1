@@ -6,7 +6,7 @@ class Graph:
     def __init__(self):
         self.graph = {}
 
-    def add(self, node, edges):
+    def addNode(self, node, edges):
         self.graph[node] = edges
 
 
@@ -14,10 +14,8 @@ def readGraph(filename, graph):
     file = open(filename)
     for line in file:
         node = int(line.split()[0])
-        edges = []
-        for edge in line.split()[1:]:
-            edges.append(int(edge))
-        graph.add(node, edges)
+        edges = [int(x) for x in line.split()[1:]]
+        graph.addNode(node, edges)
 
 
 def contraction(myGraph, node1, node2):
@@ -26,7 +24,6 @@ def contraction(myGraph, node1, node2):
             (myGraph.graph[node1]).append(node3)    # node1 absorbs node3
             (myGraph.graph[node3]).append(node1)
         myGraph.graph[node3].remove(node2)          # remove node2 from node3
-
     del myGraph.graph[node2]                        # finally, delete node 2
 
 
@@ -36,31 +33,30 @@ def minCuts(myGraph):
         cuts = len(list(myGraph.graph[node]))
         if cuts < minCut:
             minCut = cuts
-    return "minCuts: " + str(minCut)
+    return minCut
 
 
 def randomizeContraction(myGraph):
     while len(myGraph.graph) > 2:
-        # pick random node from myGraph
-        randNode1 = random.choice(list(myGraph.graph.keys()))
-        # pick random node2 (that is connected to node1)
-        randNode2 = random.choice(myGraph.graph[randNode1])
+        randNode1 = random.choice(list(myGraph.graph.keys()))      # pick random node from myGraph
+        randNode2 = random.choice(myGraph.graph[randNode1])        # pick random node2 (that is connected to node1)
         contraction(myGraph, randNode1, randNode2)
     return minCuts(myGraph)
 
 
 def main():
-    # filename = ""
+    filename = "/Users/justin/Documents/Documents/Projects/PyCharm Projects/SLAlgorithms1/txt files/kargerMinCut.txt"
 
-    myGraph = Graph()
-    myGraph.add(1, [2, 4])
-    myGraph.add(2, [1, 3, 4])
-    myGraph.add(3, [2, 4])
-    myGraph.add(4, [1, 2, 3])
-    print("graph: ", myGraph.graph)
-
-    # readGraph(filename, myGraph)
-    print(randomizeContraction(myGraph))
+    minimum = sys.maxsize
+    for i in range(200**2):
+        myGraph = Graph()
+        readGraph(filename, myGraph)
+        currentAns = randomizeContraction(myGraph)
+        print(currentAns)
+        if currentAns < minimum:
+            minimum = currentAns
+        del myGraph
+    print("minimum is ", minimum)
 
 
 main()
