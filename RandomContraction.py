@@ -13,8 +13,9 @@ class Graph:
 def readGraph(filename, graph):
     file = open(filename)
     for line in file:
-        node = int(line.split()[0])
-        edges = [int(x) for x in line.split()[1:]]
+        arr = line.split()
+        node = int(arr[0])
+        edges = [int(x) for x in arr[1:]]
         graph.addNode(node, edges)
 
 
@@ -48,7 +49,7 @@ def main():
     filename = "/Users/justin/Documents/Documents/Projects/PyCharm Projects/SLAlgorithms1/txt files/kargerMinCut.txt"
 
     minimum = sys.maxsize
-    for i in range(200**2):
+    for i in range(200):
         myGraph = Graph()
         readGraph(filename, myGraph)
         currentAns = randomizeContraction(myGraph)
